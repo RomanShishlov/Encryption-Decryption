@@ -2,13 +2,13 @@ import pyAesCrypt
 import os
 
 
-# функция шифрования файла
+# encryption function
 def encryption(file, password):
 
-    # задаём размер буфера
+    # buffer size
     buffer_size = 512 * 1024
 
-    # вызываем метод шифрования
+    # encryption method
     pyAesCrypt.encryptFile(
         str(file),
         str(file) + ".crp",
@@ -16,29 +16,29 @@ def encryption(file, password):
         buffer_size
     )
 
-    # чтобы видеть результат выводим на печать имя зашифрованного файла
+    # print the name of the encrypted file, to see the result
     print("[Файл '" + str(os.path.splitext(file)[0]) + "' encrypted]")
 
-    # удаляем исходный файл
+    # delete original file
     os.remove(file)
 
-# функция сканирования директорий
+# scanning func 
 def walking_by_dirs(dir, password):
 
-    # перебираем все поддиректории в указанной директории
+    # check sub directories in the directory
     for name in os.listdir(dir):
         path = os.path.join(dir, name)
 
-        # если находим файл, то шифруем его
+        # encrypt file if it is found
         if os.path.isfile(path):
             try:
                 encryption(path, password)
             except Exception as ex:
                 print(ex)
-        # если находим директорию, то повторяем цикл в поисках файлов
+        # repeat, if the directory is found to find files
         else:
             walking_by_dirs(path, password)
 
 
 password = input("enter encryption password: ")
-walking_by_dirs("C:/Users/romas/Desktop/incryptionTest", password)
+walking_by_dirs("Path", password)
