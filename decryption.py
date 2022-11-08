@@ -1,13 +1,13 @@
 import pyAesCrypt
 import os
 
-# функция дешифровки файла
+# decryption functon
 def decryption(file, password):
 
-    # задаём размер буфера
+    # buffer size
     buffer_size = 512 * 1024
 
-    # вызываем метод расшифровки
+    # method for decryption
     pyAesCrypt.decryptFile(
         str(file),
         str(os.path.splitext(file)[0]),
@@ -15,29 +15,29 @@ def decryption(file, password):
         buffer_size
     )
 
-    # чтобы видеть результат выводим на печать имя зашифрованного файла
+    # print the name of the decrypted file
     print("[Файл '" + str(os.path.splitext(file)[0]) + "' decrypted]")
 
-    # удаляем исходный файл
+    # delete starting file
     os.remove(file)
 
-# функция сканирования директорий
+# scanning function
 def walking_by_dirs(dir, password):
 
-    # перебираем все поддиректории в указанной директории
+    # перебираем все поддиректории в указанной директории checking all sub-directory in the given directory
     for name in os.listdir(dir):
         path = os.path.join(dir, name)
 
-        # если находим файл, то дешифруем его
+        # if the file is found than decrypt it
         if os.path.isfile(path):
             try:
                 decryption(path, password)
             except Exception as ex:
                 print(ex)
-        # если находим директорию, то повторяем цикл в поисках файлов
+        # if we find a directory, than repeat cycle in search of files
         else:
             walking_by_dirs(path, password)
 
 
 password = input("enter decryption password: ")
-walking_by_dirs("C:/Users/romas/Desktop/incryptionTest", password)
+walking_by_dirs("Path", password)
